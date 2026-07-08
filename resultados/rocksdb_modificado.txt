@@ -1,7 +1,44 @@
+#0 building with "default" instance using docker driver
+
+#1 [rocksdb-modificado internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 0.0s
+
+#2 [rocksdb-modificado internal] load build definition from Dockerfile
+#2 transferring dockerfile: 463B 0.0s done
+#2 DONE 0.1s
+
+#3 [rocksdb-modificado internal] load metadata for docker.io/library/ubuntu:22.04
+#3 DONE 0.3s
+
+#4 [rocksdb-modificado 1/5] FROM docker.io/library/ubuntu:22.04@sha256:0e0a0fc6d18feda9db1590da249ac93e8d5abfea8f4c3c0c849ce512b5ef8982
+#4 DONE 0.0s
+
+#5 [rocksdb-modificado internal] load build context
+#5 transferring context: 30B done
+#5 DONE 0.0s
+
+#6 [rocksdb-modificado 2/5] RUN apt-get update && apt-get install -y     build-essential     librocksdb-dev     libsnappy-dev     libz-dev     libbz2-dev     libzstd-dev     liblz4-dev     && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [rocksdb-modificado 3/5] WORKDIR /app
+#7 CACHED
+
+#8 [rocksdb-modificado 4/5] COPY main.cpp .
+#8 CACHED
+
+#9 [rocksdb-modificado 5/5] RUN g++ -O3 -fno-rtti main.cpp -o rocksdb_bench -lrocksdb -lpthread -lsnappy -lz -lbz2 -lzstd -llz4
+#9 CACHED
+
+#10 [rocksdb-modificado] exporting to image
+#10 exporting layers done
+#10 writing image sha256:b7721c07b47148462aa4048cc443bb8ce430f28286d91aa22831569b2d423195 0.0s done
+#10 naming to docker.io/library/proyecto-rocksdb-modificado 0.0s done
+#10 DONE 0.0s
 [RocksDB Modificado] Configurado con DummyFilterPolicy.
 Insertando 1000000 pares clave-valor aleatorios...
 -------------------------------------------
-Tiempo de inserción : 3617 ms
-Throughput          : 276472 ops/s
-Memoria RSS consumida: 57304 KB (55.9609 MB)
+Tiempo de inserción : 3705 ms
+Throughput          : 269905 ops/s
+Memoria RSS consumida: 59148 KB (57.7617 MB)
 -------------------------------------------
