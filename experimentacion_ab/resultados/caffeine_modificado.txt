@@ -1,0 +1,6 @@
+[Caffeine Modificado] Evaluando ConcurrentHashMap + Cuckoo Filter...
+-------------------------------------------
+Tiempo de ejecución : 982 ms
+Throughput          : 1018329 ops/s
+Memoria JVM usada   : 2 MB
+-------------------------------------------

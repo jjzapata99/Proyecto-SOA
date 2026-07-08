@@ -1,0 +1,7 @@
+[RocksDB Modificado] Configurado con DummyFilterPolicy.
+Insertando 1000000 pares clave-valor aleatorios...
+-------------------------------------------
+Tiempo de inserción : 3617 ms
+Throughput          : 276472 ops/s
+Memoria RSS consumida: 57304 KB (55.9609 MB)
+-------------------------------------------

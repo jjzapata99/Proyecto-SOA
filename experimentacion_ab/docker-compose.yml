@@ -1,0 +1,73 @@
+services:
+  redis-baseline:
+    image: redislabs/rebloom:latest
+    container_name: redis-baseline
+    ports:
+      - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    mem_limit: 256m
+    profiles: ["redis", "baseline"]
+
+  redis-modificado:
+    build:
+      context: ./redis_mod
+    container_name: redis-modificado
+    ports:
+      - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    mem_limit: 256m
+    profiles: ["redis", "modificado"]
+
+  rocksdb-baseline:
+    build:
+      context: ./rocksdb_bench
+    container_name: rocksdb-baseline
+    command: ["--baseline"]
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    mem_limit: 256m
+    profiles: ["rocksdb", "baseline"]
+
+  rocksdb-modificado:
+    build:
+      context: ./rocksdb_bench
+    container_name: rocksdb-modificado
+    command: ["--modificado"]
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    mem_limit: 256m
+    profiles: ["rocksdb", "modificado"]
+
+  caffeine-baseline:
+    build:
+      context: ./caffeine_bench
+    container_name: caffeine-baseline
+    command: ["--baseline"]
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    mem_limit: 256m
+    profiles: ["caffeine", "baseline"]
+
+  caffeine-modificado:
+    build:
+      context: ./caffeine_bench
+    container_name: caffeine-modificado
+    command: ["--modificado"]
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    mem_limit: 256m
+    profiles: ["caffeine", "modificado"]

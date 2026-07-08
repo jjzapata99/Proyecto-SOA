@@ -1,0 +1,7 @@
+[RocksDB Baseline] Configurado con BloomFilterPolicy original.
+Insertando 1000000 pares clave-valor aleatorios...
+-------------------------------------------
+Tiempo de inserción : 3791 ms
+Throughput          : 263782 ops/s
+Memoria RSS consumida: 58376 KB (57.0078 MB)
+-------------------------------------------
