@@ -1,73 +1,102 @@
+# Correr con ./scripts/run_all.sh, NO con `docker compose up`: `up` levanta los
+# 8 servicios en paralelo y la contención de CPU haría incomparables las
+# métricas de throughput.
+
+x-caffeine: &caffeine-build
+  build:
+    context: ./caffeine
+  volumes:
+    - ./traces:/traces:ro
+    - ./results/caffeine:/results
+  environment: &caffeine-env
+    # Muy por debajo de las ~82k llaves distintas de la traza, para que haya
+    # presión de desalojo real y el sketch de admisión llegue a importar.
+    CACHE_SIZE: "${CACHE_SIZE:-10000}"
+
+x-ristretto: &ristretto-build
+  build:
+    context: ./ristretto
+  volumes:
+    - ./traces:/traces:ro
+    - ./results/ristretto:/results
+  environment: &ristretto-env
+    CACHE_SIZE: "${CACHE_SIZE:-10000}"
+
+x-rocksdb: &rocksdb-build
+  build:
+    context: ./rocksdb
+  volumes:
+    - ./traces:/traces:ro
+    - ./results/rocksdb:/results
+
+x-cassandra: &cassandra-build
+  build:
+    context: ./cassandra
+  volumes:
+    - ./traces:/traces:ro
+    - ./results/cassandra:/results
+
 services:
-  redis-baseline:
-    image: redislabs/rebloom:latest
-    container_name: redis-baseline
-    ports:
-      - "6379:6379"
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    mem_limit: 256m
-    profiles: ["redis", "baseline"]
-
-  redis-modificado:
-    build:
-      context: ./redis_mod
-    container_name: redis-modificado
-    ports:
-      - "6379:6379"
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    mem_limit: 256m
-    profiles: ["redis", "modificado"]
-
-  rocksdb-baseline:
-    build:
-      context: ./rocksdb_bench
-    container_name: rocksdb-baseline
-    command: ["--baseline"]
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    mem_limit: 256m
-    profiles: ["rocksdb", "baseline"]
-
-  rocksdb-modificado:
-    build:
-      context: ./rocksdb_bench
-    container_name: rocksdb-modificado
-    command: ["--modificado"]
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    mem_limit: 256m
-    profiles: ["rocksdb", "modificado"]
 
   caffeine-baseline:
-    build:
-      context: ./caffeine_bench
-    container_name: caffeine-baseline
-    command: ["--baseline"]
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    mem_limit: 256m
-    profiles: ["caffeine", "baseline"]
+    <<: *caffeine-build
+    environment:
+      <<: *caffeine-env
+      SKETCH_VARIANT: baseline
+      OUTPUT_PREFIX: baseline
 
-  caffeine-modificado:
-    build:
-      context: ./caffeine_bench
-    container_name: caffeine-modificado
-    command: ["--modificado"]
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    mem_limit: 256m
-    profiles: ["caffeine", "modificado"]
+  caffeine-countsketch:
+    <<: *caffeine-build
+    environment:
+      <<: *caffeine-env
+      SKETCH_VARIANT: countsketch
+      OUTPUT_PREFIX: countsketch
+
+  ristretto-baseline:
+    <<: *ristretto-build
+    environment:
+      <<: *ristretto-env
+      SKETCH_VARIANT: baseline
+      OUTPUT_PREFIX: baseline
+
+  ristretto-countsketch:
+    <<: *ristretto-build
+    environment:
+      <<: *ristretto-env
+      SKETCH_VARIANT: countsketch
+      OUTPUT_PREFIX: countsketch
+
+  rocksdb-baseline:
+    <<: *rocksdb-build
+    environment:
+      FILTER_VARIANT: bloom
+      OUTPUT_PREFIX: baseline
+
+  rocksdb-binaryfuse:
+    <<: *rocksdb-build
+    environment:
+      FILTER_VARIANT: binaryfuse
+      OUTPUT_PREFIX: binaryfuse
+
+  
+  cassandra-baseline:
+    <<: *cassandra-build
+    environment:
+      FILTER_VARIANT: bloom
+      OUTPUT_PREFIX: baseline
+      NUM_OPS: "${NUM_OPS:-200000}"
+    ports:
+      - "9042:9042"
+
+  cassandra-cuckoo:
+    <<: *cassandra-build
+    environment:
+      FILTER_VARIANT: cuckoo
+      OUTPUT_PREFIX: cuckoo
+      NUM_OPS: "${NUM_OPS:-200000}"
+    ports:
+      - "9043:9042"
+
+networks:
+  default:
+    name: caches-research-net

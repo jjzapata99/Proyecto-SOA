@@ -1,0 +1,17 @@
+{
+  "cache_size": 10000,
+  "cost_evicted": 167945,
+  "distinct_keys": 81985,
+  "hits": 752582,
+  "keys_added": 177945,
+  "keys_evicted": 167945,
+  "misses": 247418,
+  "num_counters": 100000,
+  "ops": 1000000,
+  "ratio": 0.752582,
+  "sketch": "count-sketch (reemplazo)",
+  "sketch_bytes": 262144,
+  "sketch_counter_max": 127,
+  "sketch_counters": 262144,
+  "variant": "countsketch"
+}

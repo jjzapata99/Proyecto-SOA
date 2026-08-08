@@ -1,0 +1,23 @@
+{
+  "variant": "baseline",
+  "sketch": "count-min-4",
+  "cache_size": 10000,
+  "policy": "sketch.WindowTinyLfu (1%)",
+  "hit_rate_percent": 77.64,
+  "hits": 776414,
+  "misses": 223586,
+  "evictions": 213586,
+  "admit_rate_percent": 6.79,
+  "raw_csv_row": {
+    "Policy": "sketch.WindowTinyLfu (1%)",
+    "Hit Rate": "77.64",
+    "Miss Rate": "22.36",
+    "Hits": "776414",
+    "Misses": "223586",
+    "Requests": "1000000",
+    "Evictions": "213586",
+    "Admit rate": "6.79",
+    "Steps": "1000000",
+    "Time": "483"
+  }
+}
