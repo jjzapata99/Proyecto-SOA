@@ -184,6 +184,7 @@ caminos:
   de referencia).
 - Bajar una traza pública tipo ARC/S3 y convertirla a un entero por línea.
 
+<!--
 ## Qué queda pendiente
 
 - **Repeticiones en el harness.** `run_all.sh` corre cada variante una sola vez.
