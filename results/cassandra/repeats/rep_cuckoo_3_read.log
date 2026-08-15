@@ -1,0 +1,123 @@
+******************** Stress Settings ********************
+Command:
+  Type: read
+  Count: 200,000
+  No Warmup: false
+  Consistency Level: LOCAL_ONE
+  Target Uncertainty: not applicable
+  Key Size (bytes): 10
+  Counter Increment Distibution: add=fixed(1)
+Rate:
+  Auto: false
+  Thread Count: 8
+  OpsPer Sec: 0
+Population:
+  Distribution: Gaussian:  min=1,max=200000,mean=100000.500000,stdev=33333.166667
+  Order: ARBITRARY
+  Wrap: false
+Insert:
+  Revisits: Uniform:  min=1,max=1000000
+  Visits: Fixed:  key=1
+  Row Population Ratio: Ratio: divisor=1.000000;delegate=Fixed:  key=1
+  Batch Type: not batching
+Columns:
+  Max Columns Per Key: 5
+  Column Names: [C0, C1, C2, C3, C4]
+  Comparator: AsciiType
+  Timestamp: null
+  Variable Column Count: false
+  Slice: false
+  Size Distribution: Fixed:  key=34
+  Count Distribution: Fixed:  key=5
+Errors:
+  Ignore: false
+  Tries: 10
+Log:
+  No Summary: false
+  No Settings: false
+  File: null
+  Interval Millis: 1000
+  Level: NORMAL
+Mode:
+  API: JAVA_DRIVER_NATIVE
+  Connection Style: CQL_PREPARED
+  CQL Version: CQL3
+  Protocol Version: V5
+  Username: null
+  Password: null
+  Auth Provide Class: null
+  Max Pending Per Connection: 128
+  Connections Per Host: 8
+  Compression: NONE
+Node:
+  Nodes: [localhost]
+  Is White List: false
+  Datacenter: null
+Schema:
+  Keyspace: keyspace1
+  Replication Strategy: org.apache.cassandra.locator.SimpleStrategy
+  Replication Strategy Options: {replication_factor=1}
+  Table Compression: null
+  Table Compaction Strategy: null
+  Table Compaction Strategy Options: {}
+Transport:
+  truststore=null; truststore-password=null; keystore=null; keystore-password=null; ssl-protocol=TLS; ssl-alg=null; ssl-ciphers=TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA; 
+Port:
+  Native Port: 9042
+  JMX Port: 7199
+Graph:
+  File: null
+  Revision: unknown
+  Title: null
+  Operation: READ
+TokenRange:
+  Wrap: false
+  Split Factor: 1
+
+Sleeping 2s...
+Warming up READ with 50000 iterations...
+Connected to cluster: Test Cluster, max pending requests per connection 128, max connections per host 8
+Datacenter: datacenter1; Host: localhost/127.0.0.1:9042; Rack: rack1
+Running READ with 8 threads for 200000 iteration
+type                                               total ops,    op/s,    pk/s,   row/s,    mean,     med,     .95,     .99,    .999,     max,   time,   stderr, errors,  gc: #,  max ms,  sum ms,  sdv ms,      mb
+total,                                                  2754,    2754,    2754,    2754,     1.0,     0.8,     2.0,     4.1,    15.2,    30.1,    1.0,  0.00000,      0,      0,       0,       0,       0,       0
+total,                                                 11190,    8436,    8436,    8436,     0.9,     0.7,     2.0,     4.4,    13.5,    22.6,    2.0,  0.35703,      0,      0,       0,       0,       0,       0
+total,                                                 20157,    8967,    8967,    8967,     0.9,     0.7,     1.7,     3.8,    14.5,    27.8,    3.0,  0.24105,      0,      1,      18,      18,       0,     394
+total,                                                 30295,   10138,   10138,   10138,     0.8,     0.6,     1.5,     2.8,     8.3,    29.1,    4.0,  0.18811,      0,      0,       0,       0,       0,       0
+total,                                                 39323,    9028,    9028,    9028,     0.9,     0.6,     1.6,     4.7,    18.5,    27.2,    5.0,  0.14865,      0,      1,      10,      10,       0,     390
+total,                                                 49956,   10633,   10633,   10633,     0.7,     0.6,     1.3,     2.4,     7.0,    23.2,    6.0,  0.12728,      0,      0,       0,       0,       0,       0
+total,                                                 60506,   10550,   10550,   10550,     0.7,     0.6,     1.4,     2.3,     8.5,    31.5,    7.0,  0.11063,      0,      0,       0,       0,       0,       0
+total,                                                 73012,   12506,   12506,   12506,     0.6,     0.5,     1.0,     1.6,     9.3,    20.1,    8.0,  0.10377,      0,      1,      10,      10,       0,     389
+total,                                                 84959,   11947,   11947,   11947,     0.6,     0.6,     1.1,     1.8,     5.2,    18.6,    9.0,  0.09429,      0,      0,       0,       0,       0,       0
+total,                                                 96235,   11276,   11276,   11276,     0.7,     0.6,     1.2,     1.9,     6.3,    20.4,   10.0,  0.08512,      0,      1,      11,      11,       0,     389
+total,                                                108702,   12467,   12467,   12467,     0.6,     0.6,     1.1,     1.7,     4.6,     6.7,   11.0,  0.07895,      0,      0,       0,       0,       0,       0
+total,                                                119786,   11084,   11084,   11084,     0.7,     0.6,     1.3,     2.2,     8.3,    16.6,   12.0,  0.07226,      0,      1,      10,      10,       0,     390
+total,                                                131412,   11626,   11626,   11626,     0.7,     0.6,     1.1,     2.2,    15.6,    38.4,   13.0,  0.06713,      0,      0,       0,       0,       0,       0
+total,                                                143722,   12310,   12310,   12310,     0.6,     0.6,     1.1,     1.8,     6.3,    26.8,   14.0,  0.06318,      0,      1,      10,      10,       0,     388
+total,                                                155518,   11796,   11796,   11796,     0.7,     0.6,     1.2,     1.9,     4.7,    14.1,   15.0,  0.05909,      0,      0,       0,       0,       0,       0
+total,                                                168510,   12992,   12992,   12992,     0.6,     0.5,     1.0,     1.6,     3.9,    14.3,   16.0,  0.05645,      0,      0,       0,       0,       0,       0
+total,                                                179858,   11348,   11348,   11348,     0.7,     0.6,     1.3,     2.2,     7.5,    15.4,   17.0,  0.05306,      0,      1,      13,      13,       0,     389
+total,                                                192259,   12401,   12401,   12401,     0.6,     0.6,     1.1,     1.7,     3.8,     6.0,   18.0,  0.05036,      0,      0,       0,       0,       0,       0
+total,                                                200000,   12205,   12205,   12205,     0.6,     0.5,     1.1,     1.9,    15.4,    15.9,   18.6,  0.04793,      0,      0,       0,       0,       0,       0
+
+
+Results:
+Op rate                   :   10,733 op/s  [READ: 10,733 op/s]
+Partition rate            :   10,733 pk/s  [READ: 10,733 pk/s]
+Row rate                  :   10,733 row/s [READ: 10,733 row/s]
+Latency mean              :    0.7 ms [READ: 0.7 ms]
+Latency median            :    0.6 ms [READ: 0.6 ms]
+Latency 95th percentile   :    1.3 ms [READ: 1.3 ms]
+Latency 99th percentile   :    2.3 ms [READ: 2.3 ms]
+Latency 99.9th percentile :   10.1 ms [READ: 10.1 ms]
+Latency max               :   38.4 ms [READ: 38.4 ms]
+Total partitions          :    200,000 [READ: 200,000]
+Total errors              :          0 [READ: 0]
+Total GC count            : 7
+Total GC memory           : 2.664 GiB
+Total GC time             :    0.1 seconds
+Avg GC time               :   11.7 ms
+StdDev GC time            :    2.8 ms
+Total operation time      : 00:00:18
+
+END

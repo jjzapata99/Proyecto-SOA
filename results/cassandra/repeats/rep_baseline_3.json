@@ -1,0 +1,19 @@
+{
+  "variant": "bloom",
+  "filter_impl": "BloomFilter",
+  "ops_per_phase": 200000,
+  "bloom_filter_false_positives": 2367,
+  "bloom_filter_false_ratio": 0.00473,
+  "filter_space_used_bytes": 250032,
+  "filter_off_heap_bytes": 250016,
+  "write_op_rate": 9475.0,
+  "read_op_rate": 9506.0,
+  "read_latency_mean_ms": 0.8,
+  "read_latency_p99_ms": 3.0,
+  "logs": {
+    "write": "rep_baseline_3_write.log",
+    "read": "rep_baseline_3_read.log",
+    "tablestats": "rep_baseline_3_tablestats.log",
+    "server": "rep_baseline_3_server.log"
+  }
+}

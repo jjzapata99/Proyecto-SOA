@@ -1,2 +1,2 @@
 Policy,Hit Rate,Miss Rate,Hits,Misses,Requests,Evictions,Admit rate,Steps,Time
-sketch.WindowTinyLfu (1%),77.64,22.36,776414,223586,1000000,213586,6.79,1000000,483
+sketch.WindowTinyLfu (1%),77.64,22.36,776414,223586,1000000,213586,6.79,1000000,508

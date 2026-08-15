@@ -1,0 +1,19 @@
+{
+  "variant": "cuckoo",
+  "filter_impl": "CuckooFilter",
+  "ops_per_phase": 200000,
+  "bloom_filter_false_positives": 9,
+  "bloom_filter_false_ratio": 2e-05,
+  "filter_space_used_bytes": 1310720,
+  "filter_off_heap_bytes": 0,
+  "write_op_rate": 10375.0,
+  "read_op_rate": 10733.0,
+  "read_latency_mean_ms": 0.7,
+  "read_latency_p99_ms": 2.3,
+  "logs": {
+    "write": "rep_cuckoo_3_write.log",
+    "read": "rep_cuckoo_3_read.log",
+    "tablestats": "rep_cuckoo_3_tablestats.log",
+    "server": "rep_cuckoo_3_server.log"
+  }
+}
