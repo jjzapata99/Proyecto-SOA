@@ -61,8 +61,6 @@ scripts/     run_all.sh, run_repeats.sh, compare_results.py,
 traces/      generador zipfiano + la traza generada
 results/     <proyecto>/<variante>.json (+ logs crudos)
              <proyecto>/repeats/ para las corridas repetidas
-CLAUDE.md    instrucciones para Claude Code: comandos, arquitectura y las
-             restricciones no obvias de cada proyecto
 ```
 
 ## Metodología
