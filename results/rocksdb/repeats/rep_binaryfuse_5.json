@@ -1,0 +1,19 @@
+{
+  "variant": "binaryfuse",
+  "filter_policy": "BinaryFuseFilterPolicy",
+  "num_keys_loaded": 81985,
+  "num_sst_files": 1,
+  "num_lookups": 2000000,
+  "found": 1000000,
+  "not_found": 1000000,
+  "elapsed_seconds": 1.60354,
+  "lookups_per_second": 1.24724e+06,
+  "filter_size_bytes": 98332,
+  "num_filter_entries": 81985,
+  "filter_bits_per_key": 9.59512,
+  "filter_useful": 988505,
+  "filter_full_positive": 1002652,
+  "filter_full_true_positive": 1000000,
+  "filter_false_positives": 2652,
+  "filter_false_positive_rate": 0.00267566
+}

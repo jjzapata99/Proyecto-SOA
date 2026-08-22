@@ -2,18 +2,18 @@
   "variant": "bloom",
   "filter_impl": "BloomFilter",
   "ops_per_phase": 200000,
-  "bloom_filter_false_positives": 2392,
-  "bloom_filter_false_ratio": 0.00478,
+  "bloom_filter_false_positives": 2397,
+  "bloom_filter_false_ratio": 0.00479,
   "filter_space_used_bytes": 250024,
   "filter_off_heap_bytes": 250008,
-  "write_op_rate": 10489.0,
-  "read_op_rate": 12425.0,
-  "read_latency_mean_ms": 0.6,
-  "read_latency_p99_ms": 1.7,
+  "write_op_rate": 13061.0,
+  "read_op_rate": 13687.0,
+  "read_latency_mean_ms": 0.5,
+  "read_latency_p99_ms": 1.4,
   "logs": {
-    "write": "baseline_write.log",
-    "read": "baseline_read.log",
-    "tablestats": "baseline_tablestats.log",
-    "server": "baseline_server.log"
+    "write": "rep_baseline_1_write.log",
+    "read": "rep_baseline_1_read.log",
+    "tablestats": "rep_baseline_1_tablestats.log",
+    "server": "rep_baseline_1_server.log"
   }
 }

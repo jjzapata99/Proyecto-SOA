@@ -1,0 +1,19 @@
+{
+  "variant": "bloom",
+  "filter_policy": "BloomFilterPolicy(10 bits/key)",
+  "num_keys_loaded": 81985,
+  "num_sst_files": 1,
+  "num_lookups": 2000000,
+  "found": 1000000,
+  "not_found": 1000000,
+  "elapsed_seconds": 1.90531,
+  "lookups_per_second": 1.0497e+06,
+  "filter_size_bytes": 102533,
+  "num_filter_entries": 81985,
+  "filter_bits_per_key": 10.005,
+  "filter_useful": 986630,
+  "filter_full_positive": 1004527,
+  "filter_full_true_positive": 1000000,
+  "filter_false_positives": 4527,
+  "filter_false_positive_rate": 0.00456739
+}

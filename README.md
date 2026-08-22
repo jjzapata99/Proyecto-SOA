@@ -99,25 +99,27 @@ política de admisión llegue a influir. Cassandra es la excepción: usa
   Su política de desalojo muestrea el mapa de items y Go aleatoriza a propósito
   el orden de iteración de mapas; además `Set` es asíncrono. Medido sobre 5
   corridas de cada variante (`scripts/run_repeats.sh`): el hit ratio del baseline
-  va de 0.751383 a 0.752371 y el del Count-Sketch de 0.752252 a 0.753910. Los
-  rangos **se solapan** en un tramo chico, así que la comparación no se resuelve
-  mirando mínimos y máximos; sí es significativa por la prueba t de Welch
-  (t = 3.36, p = 0.014). La diferencia de medias es +0.16%. Cualquier conclusión
-  sobre Ristretto necesita repeticiones: la corrida única de `run_all.sh` para
-  este mismo informe dio 0.74789 en el baseline, **por debajo del mínimo de las 5
-  repeticiones**. La variación es todavía mayor en `keys_added` (93k–124k en el
-  baseline, 145k–174k en el reemplazo).
+  va de 0.751488 a 0.752155 y el del Count-Sketch de 0.752892 a 0.753649. Los
+  rangos **no se solapan** y la diferencia de medias (+0.19%) es significativa
+  por la prueba t de Welch (p = 3.8e-5). Aun así, cualquier conclusión sobre
+  Ristretto necesita repeticiones: la corrida única de `run_all.sh` para este
+  mismo informe dio 0.754664 en el Count-Sketch, **por encima del máximo de las
+  5 repeticiones**, y 130 790 `keys_added` contra un rango de 142 288–166 076 en
+  esas mismas repeticiones. La variación relativa es mucho mayor en `keys_added`
+  (99k–106k en el baseline, 142k–166k en el reemplazo) que en el hit ratio.
 
 - **Los números de throughput no distinguen las variantes.** `lookups/s` en
   RocksDB y `read op/s` y p99 en Cassandra varían entre corridas más de lo que
-  difieren entre variantes: sobre 3 corridas de cada una, RocksDB da +5.2% a
-  favor del Binary Fuse con p = 0.45, y Cassandra +13.7% en op rate con p = 0.34.
-  Ninguno de los dos es concluyente, y ambos dependen de la máquina y de su carga
-  en ese momento. Una versión previa de este README reportaba +57.5% de
-  lookups/s en RocksDB a partir de una sola corrida; en las corridas actuales el
-  baseline solo ya mide 779k lookups/s contra los 281k de aquella. Las métricas
-  estructurales (bits/llave, tasa de falsos positivos, tamaño del filtro) sí son
-  perfectamente reproducibles: idénticas en las 3 corridas.
+  difieren entre variantes: sobre 5 corridas de cada una, RocksDB da +1.6% a
+  favor del Binary Fuse con p = 0.71, y Cassandra +3.1% en op rate (p = 0.59) y
+  −3.7% en p99 (p = 0.59). Ninguno es concluyente, y todos dependen de la
+  máquina y de su carga en ese momento. Dos ejemplos de cuánto se mueve el
+  número: una versión previa de este README reportaba +57.5% de lookups/s en
+  RocksDB a partir de una sola corrida, y la corrida única de `run_all.sh` de
+  esta misma ronda midió 936 998 lookups/s en el baseline, **por debajo del
+  mínimo (1 049 700) de sus propias 5 repeticiones**. Las métricas estructurales
+  (bits/llave, tasa de falsos positivos, tamaño del filtro) sí son perfectamente
+  reproducibles: idénticas en las 5 corridas.
 
 - **El filtro cuckoo de Cassandra no se persiste a disco.** Cassandra 4.1.8
   castea duro a `BloomFilter` al escribir el componente `FILTER` de un
@@ -152,37 +154,38 @@ los hospedan:
 
 ## Resultados con la traza sintética por defecto
 
-Corridas del 14/8/2026, todas en la misma máquina y en serie. El óptimo de un
-oráculo que cachea las 10.000 llaves más frecuentes es **80.56%** de hit ratio.
+Corridas del 21/8/2026, todas en la misma máquina, en serie y con **5
+repeticiones por variante en los cuatro proyectos**. El óptimo de un oráculo que
+cachea las 10.000 llaves más frecuentes es **80.56%** de hit ratio.
 
-Sketches de frecuencia (Caffeine es determinista, así que va con una corrida;
-Ristretto no lo es y va con 5 por variante):
+Sketches de frecuencia (Caffeine es determinista: sus 5 corridas dieron
+exactamente el mismo valor, así que no llevan rango ni p-valor):
 
 | Proyecto | Métrica | Baseline | Reemplazo | Cambio |
 |---|---|---|---|---|
 | **Caffeine** | hit rate | 77.64% | 76.46% | −1.18 pp (−1.52%) |
 | **Caffeine** | tasa de admisión | 6.79% | 4.55% | −33% |
-| **Ristretto** | hit ratio (media de 5) | 0.751772 | 0.752983 | **+0.16%** (p = 0.014) |
-| **Ristretto** | hit ratio (rango de 5) | 0.7514–0.7524 | 0.7523–0.7539 | rangos solapados |
-| **Ristretto** | llaves admitidas (media de 5) | 110 509 | 161 753 | +46% |
+| **Ristretto** | hit ratio (media de 5) | 0.751827 | 0.753262 | **+0.19%** (p = 3.8e-5) |
+| **Ristretto** | hit ratio (rango de 5) | 0.751488–0.752155 | 0.752892–0.753649 | rangos disjuntos |
+| **Ristretto** | llaves admitidas (media de 5) | 102 432 | 156 981 | +53% (p = 8.5e-5) |
 
-Filtros de pertenencia (RocksDB con 3 corridas por variante; Cassandra corre
-aparte con `cassandra-stress`, también 3 por variante):
+Filtros de pertenencia (RocksDB con 5 corridas por variante; Cassandra corre
+aparte con `cassandra-stress`, también 5 por variante):
 
 | Proyecto | Métrica | Baseline | Reemplazo | Cambio |
 |---|---|---|---|---|
 | **RocksDB** | bits/llave | 10.005 | 9.595 | **−4.1%** |
 | **RocksDB** | tasa de falsos positivos | 0.457% | 0.268% | **−41.4%** |
 | **RocksDB** | tamaño del filtro | 102 533 B | 98 332 B | −4.1% |
-| **RocksDB** | lookups/s (media de 3) | 779 348 | 819 643 | +5.2% (p = 0.45, no concluyente) |
-| **Cassandra** | falsos positivos (media de 3) | 2 422 | 8 | **−99.7%** (p = 0.0003) |
-| **Cassandra** | tasa de falsos positivos | 0.484% | 0.0017% | **−99.7%** |
+| **RocksDB** | lookups/s (media de 5) | 1 136 896 | 1 154 696 | +1.6% (p = 0.71, no concluyente) |
+| **Cassandra** | falsos positivos (media de 5) | 2 443 | 9 | **−99.6%** (p = 1.0e-5) |
+| **Cassandra** | tasa de falsos positivos | 0.489% | 0.0016% | **−99.7%** |
 | **Cassandra** | memoria del filtro | 250 KB | 1 311 KB | **+424%** |
-| **Cassandra** | read op/s (media de 3) | 10 234 | 11 636 | +13.7% (p = 0.34, no concluyente) |
-| **Cassandra** | latencia p99 (media de 3) | 2.80 ms | 2.03 ms | −27% (p = 0.32, no concluyente) |
+| **Cassandra** | read op/s (media de 5) | 12 398 | 12 786 | +3.1% (p = 0.59, no concluyente) |
+| **Cassandra** | latencia p99 (media de 5) | 1.64 ms | 1.58 ms | −3.7% (p = 0.59, no concluyente) |
 
 Las tres métricas estructurales de RocksDB (bits/llave, tasa de falsos
-positivos, tamaño) salieron **idénticas en las 3 corridas**, así que no llevan
+positivos, tamaño) salieron **idénticas en las 5 corridas**, así que no llevan
 rango.
 
 Lectura rápida:
@@ -198,11 +201,11 @@ Lectura rápida:
   limitaciones): la mejora es real pero está *comprada* con memoria. La
   diferencia en op rate y en p99 no es distinguible del ruido.
 - **En los sketches de frecuencia el panorama es mixto y de magnitud chica**:
-  el Count-Sketch mejora levemente en Ristretto (+0.16%, significativo por
+  el Count-Sketch mejora levemente en Ristretto (+0.19%, significativo por
   Welch) y empeora en Caffeine (−1.52%). A igual memoria, la ventaja del
   estimador con signo se compensa con tener la mitad de contadores. Nótese
-  también que el Count-Sketch admite un 46% más de llaves en Ristretto (110k →
-  162k) y baja la tasa de admisión un 33% en Caffeine (6.79% → 4.55%): cambia
+  también que el Count-Sketch admite un 53% más de llaves en Ristretto (102k →
+  157k) y baja la tasa de admisión un 33% en Caffeine (6.79% → 4.55%): cambia
   bastante el comportamiento de la política aunque el hit rate se mueva poco.
 
 > **Confound que hay que reportar en el análisis:** a igual memoria, el CM-4
@@ -231,7 +234,7 @@ caminos:
   cada variante una sola vez y `compare_results.py` sigue comparando esa corrida
   única. Lo natural sería que la comparación por defecto se hiciera sobre las
   medias.
-- **Más repeticiones donde el ruido lo pide.** Con 3 corridas, ni el throughput
+- **Más repeticiones donde el ruido lo pide.** Con 5 corridas, ni el throughput
   de RocksDB ni el de Cassandra alcanzan significancia; habría que subir N (y,
   en Cassandra, alternar el orden de las variantes) para saber si hay una
   diferencia real o no la hay.
